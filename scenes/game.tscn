@@ -133,7 +133,7 @@ theme_override_colors/font_color = Color(1, 0.819608, 0.4, 1)
 theme_override_constants/outline_size = 3
 theme_override_fonts/font = ExtResource("4_p57ef")
 theme_override_font_sizes/font_size = 22
-text = "High Score: "
+text = "Highest Score: "
 horizontal_alignment = 2
 
 [node name="DebrisTimer" type="Timer" parent="."]
