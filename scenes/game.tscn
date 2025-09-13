@@ -1,0 +1,193 @@
+[gd_scene load_steps=11 format=3 uid="uid://btn6pv7dgilvg"]
+
+[ext_resource type="Script" uid="uid://bd07h7odhag8f" path="res://scripts/game.gd" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://ciw002d7xvba7" path="res://scenes/player.tscn" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://2anuui80qa1v" path="res://scripts/hud.gd" id="4_lbhrr"]
+[ext_resource type="FontFile" uid="uid://c3l1dsx2t2x6d" path="res://assets/fonts/Orbitron-Regular.ttf" id="4_p57ef"]
+[ext_resource type="Texture2D" uid="uid://0q45oq44weqi" path="res://assets/background/background_blue.png" id="6_gee14"]
+[ext_resource type="Script" uid="uid://bs0mr75jn2v7u" path="res://scripts/game_camera.gd" id="6_p57ef"]
+[ext_resource type="VideoStream" uid="uid://dn8uwqgghlvhn" path="res://assets/bg_video/star_burst_2.ogv" id="7_u5sy4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
+bg_color = Color(0.389582, 0.753249, 0.3197, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
+bg_color = Color(0.388235, 0.752941, 0.321569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+content_margin_left = 48.0
+content_margin_top = 2.0
+content_margin_right = 48.0
+content_margin_bottom = 2.0
+bg_color = Color(0.388235, 0.752941, 0.321569, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.388235, 0.752941, 0.321569, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[node name="Game" type="Node2D" groups=["game_camera", "game_root"]]
+script = ExtResource("1_lnu2h")
+
+[node name="Background" type="TextureRect" parent="."]
+visible = false
+z_index = -100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 6
+
+[node name="Player" parent="." groups=["game_camera"] instance=ExtResource("1_yqjtg")]
+position = Vector2(800, 300)
+
+[node name="StarTimer" type="Timer" parent="."]
+wait_time = 0.8
+autostart = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+process_mode = 2
+script = ExtResource("4_lbhrr")
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 73.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(1, 0.819608, 0.4, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 28
+text = "Score: 0"
+metadata/_edit_use_anchors_ = true
+
+[node name="LivesLabel" type="Label" parent="HUD" groups=["game_camera"]]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_top = 12.0
+offset_right = -15.0
+offset_bottom = 46.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.0235294, 0.839216, 0.309804, 1)
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 28
+text = "Lives: 3"
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOverLabel" type="Label" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.266667, 0.266667, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 55
+text = "GAME OVER"
+
+[node name="RestartButton" type="Button" parent="HUD"]
+process_mode = 2
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = -38.0
+offset_right = 44.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_disabled_color = Color(0.639216, 0.639216, 0.639216, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/hover = SubResource("StyleBoxFlat_lnu2h")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lbhrr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_iywne")
+text = "Restart"
+
+[node name="HighScoreLabel" type="Label" parent="HUD"]
+offset_left = 10.0
+offset_top = 46.0
+offset_right = 93.0
+offset_bottom = 69.0
+pivot_offset = Vector2(16, 8)
+theme_override_colors/font_color = Color(1, 0.819608, 0.4, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 22
+text = "High Score: "
+horizontal_alignment = 2
+
+[node name="DebrisTimer" type="Timer" parent="."]
+wait_time = 1.6
+autostart = true
+
+[node name="BG" type="Sprite2D" parent="."]
+visible = false
+z_index = -100
+position = Vector2(563, 305)
+scale = Vector2(4.78125, 2.67188)
+texture = ExtResource("6_gee14")
+
+[node name="BGCanvas" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="TextureRect" type="TextureRect" parent="BGCanvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_gee14")
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="GameCamera" type="Camera2D" parent="." groups=["game_camera", "game_root"]]
+position = Vector2(571, 322)
+script = ExtResource("6_p57ef")
+
+[node name="VideoLayer" type="CanvasLayer" parent="."]
+layer = -100
+visible = false
+
+[node name="VideoRoot" type="Control" parent="VideoLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VideoBG" type="VideoStreamPlayer" parent="VideoLayer/VideoRoot"]
+z_index = -100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stream = ExtResource("7_u5sy4")
+autoplay = true
+expand = true
+loop = true
+
+[connection signal="pressed" from="HUD/RestartButton" to="HUD" method="_on_restart_button_pressed"]

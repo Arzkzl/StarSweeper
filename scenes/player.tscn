@@ -1,0 +1,165 @@
+[gd_scene load_steps=21 format=3 uid="uid://ciw002d7xvba7"]
+
+[ext_resource type="Script" uid="uid://cx77rg2c4hxaf" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://1um7dv1x4nmu" path="res://assets/player/Player_ship_3.png" id="2_g2els"]
+[ext_resource type="Texture2D" uid="uid://b8u3huekudlif" path="res://assets/halo/magnet_circle_03.png" id="3_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://cdx66c138xqaf" path="res://assets/background/sphere1.png" id="4_dqkch"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 95.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
+radius = 12.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qhqgy"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tuyoq"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_dqkch"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_qhqgy"]
+resource_name = "pulse"
+loop_mode = 2
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qlg0r"]
+_data = {
+&"RESET": SubResource("Animation_dqkch"),
+&"pulse": SubResource("Animation_qhqgy")
+}
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qhqgy"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 85.34
+emission_ring_radius = 160.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dqkch"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qlg0r"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_tuyoq"]
+offsets = PackedFloat32Array(0, 0.46729, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 0.886275, 0.415686, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fjrip"]
+gradient = SubResource("Gradient_tuyoq")
+
+[sub_resource type="Curve" id="Curve_dqkch"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qlg0r"]
+curve = SubResource("Curve_dqkch")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_smehm"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 180.0
+initial_velocity_max = 240.0
+gravity = Vector3(0, 98, 0)
+damping_min = 27.392
+damping_max = 31.739
+scale_min = 0.18
+scale_max = 0.45
+scale_curve = SubResource("CurveTexture_qlg0r")
+color_ramp = SubResource("GradientTexture1D_fjrip")
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_g2els")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+scale = Vector2(0.4, 0.448)
+texture = ExtResource("2_g2els")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_g2els")
+
+[node name="Magnet" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Magnet"]
+visible = false
+shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="Collector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collector"]
+shape = SubResource("CircleShape2D_qhqgy")
+
+[node name="BH_Core" type="Sprite2D" parent="."]
+modulate = Color(0.821562, 0.819299, 0.962132, 1)
+material = SubResource("CanvasItemMaterial_qhqgy")
+rotation = -6.08945
+scale = Vector2(0.35, 0.312)
+texture = ExtResource("3_qhqgy")
+
+[node name="BH_Glow" type="Sprite2D" parent="."]
+modulate = Color(0.671334, 0.681291, 0.99565, 1)
+z_index = 2
+material = SubResource("CanvasItemMaterial_tuyoq")
+position = Vector2(1, 1)
+rotation = 0.518363
+scale = Vector2(0.5, 0.458)
+texture = ExtResource("3_qhqgy")
+
+[node name="BH_Horizon" type="Sprite2D" parent="."]
+modulate = Color(0.780392, 0.8, 1, 1)
+z_index = 1
+material = SubResource("CanvasItemMaterial_tuyoq")
+position = Vector2(1, 1)
+rotation = 0.518363
+scale = Vector2(0.45, 0.412)
+texture = ExtResource("3_qhqgy")
+
+[node name="BHAnim" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_qlg0r")
+}
+autoplay = "pulse"
+
+[node name="BH_Dust" type="GPUParticles2D" parent="."]
+z_index = 1
+position = Vector2(-2, -1)
+scale = Vector2(0.4, 0.4)
+emitting = false
+amount = 120
+texture = ExtResource("3_qhqgy")
+lifetime = 1.1
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_qhqgy")
+
+[node name="BH_Singularity" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.00392157)
+z_index = 3
+material = SubResource("CanvasItemMaterial_dqkch")
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("3_qhqgy")
+
+[node name="PickupBurst" type="GPUParticles2D" parent="."]
+z_index = 3
+material = SubResource("CanvasItemMaterial_qlg0r")
+position = Vector2(0.4, 0.2)
+rotation = -1.42419
+scale = Vector2(0.05, 0.05)
+emitting = false
+amount = 24
+texture = ExtResource("4_dqkch")
+lifetime = 0.3
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_smehm")
+
+[connection signal="area_entered" from="Collector" to="." method="_on_collector_area_entered"]
