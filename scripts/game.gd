@@ -1,7 +1,8 @@
 # scripts/Game.gd
-extends Node2D                                       
+extends Node2D
 # Root node that coordinates spawning, difficulty and (optionally) background video.
-@onready var _video: VideoStreamPlayer =  get_node_or_null(^"VideoLayer/VideoRoot/VideoBG")           
+@onready var _video: VideoStreamPlayer = $VideoLayer/VideoRoot/VideoBG
+		  
 # Try to find the background VideoStreamPlayer in the scene (can be null).	
 
 @export var autoplay_bg_video: bool = false          # If true, play the background video on start; if false, keep it paused (your current preference).
@@ -19,19 +20,26 @@ var _elapsed: float = 0.0                            # Counts how many seconds h
 	
 @onready var debris_scene: PackedScene = preload("res://scenes/debris.tscn")            # Debris scene to instantiate for each spawn.
 	
+const VIDEO_PATH := "res://assets/bg_video/star_burst_2.ogv"  
 
 func _ready() -> void:
 	add_to_group("game_root")    # So other scripts (e.g., debris) can find this node and read difficulty via group.
-
-	# background video control
-	if _video:                                        # If the video node is found...
-		_video.loop = false                           # We manage looping manually if needed (prevents visible stutter when it loops).
-		if autoplay_bg_video:                         # Only play if you enabled it in the Inspector.
-			_video.call_deferred("play")             # Defer play call until the node is fully inside the scene tree.
-		_video.z_index = -100                        # Keep video behind everything.
+# background video control
+	if is_instance_valid(_video):
+		_video.stream = preload(VIDEO_PATH)
+		_video.expand = true
+		_video.autoplay = false
+		_video.loop = true
+		_video.paused = false
+		await get_tree().process_frame
+		await get_tree().process_frame
+		await get_tree().process_frame
+		_video.visible = false
+		_video.play()
+		_video.visible = true
+		_video.play()
 	else:
-		push_warning("[Video] Not found at VideoLayer/VideoRoot/VideoBG (this is OK if you don't use video).")
-
+		push_warning("[Video] Not found at VideoLayer/VideoRoot/VideoBG")
 	#  Timer setup and signal connections
 	if star_timer:
 		if not star_timer.timeout.is_connected(_spawn_star):

@@ -149,6 +149,7 @@ texture = ExtResource("6_gee14")
 
 [node name="BGCanvas" type="CanvasLayer" parent="."]
 layer = -100
+visible = false
 
 [node name="TextureRect" type="TextureRect" parent="BGCanvas"]
 anchors_preset = 15
@@ -166,7 +167,6 @@ script = ExtResource("6_p57ef")
 
 [node name="VideoLayer" type="CanvasLayer" parent="."]
 layer = -100
-visible = false
 
 [node name="VideoRoot" type="Control" parent="VideoLayer"]
 layout_mode = 3
@@ -186,8 +186,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 stream = ExtResource("7_u5sy4")
-autoplay = true
+volume_db = -80.0
 expand = true
 loop = true
+buffering_msec = 1000
 
 [connection signal="pressed" from="HUD/RestartButton" to="HUD" method="_on_restart_button_pressed"]

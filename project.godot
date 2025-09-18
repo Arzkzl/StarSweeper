@@ -13,6 +13,7 @@ config_version=5
 config/name="StarSweeper"
 run/main_scene="uid://btn6pv7dgilvg"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=30
 config/icon="res://assets/background/icon.svg"
 
 [autoload]
@@ -73,4 +74,5 @@ ui_page_up={
 
 [rendering]
 
+renderer/rendering_method="mobile"
 environment/defaults/default_clear_color=Color(0.0705882, 0.0862745, 0.105882, 1)
