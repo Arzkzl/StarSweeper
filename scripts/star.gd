@@ -32,5 +32,8 @@ func nudge_towards(point: Vector2, speed: float = 60.0) -> void:
 	_velocity = dir * speed                            # Set velocity instantly to that direction/speed
 
 # When collected by the Player’s collector Area2D, remove this star from the scene.
+# When collected by the Player’s collector Area2D, remove this star from the scene.
 func collect() -> void:
-	queue_free()                                       # Delete this node safely at the end of the frame
+	# add +1 to current score (ScoreManager must be Autoload)
+	ScoreManager.add_score(1)
+	queue_free()  # delete at end of frame                                  # Delete this node safely at the end of the frame

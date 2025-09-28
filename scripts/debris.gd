@@ -81,9 +81,11 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	# This runs when the rock touches another physics body.
-	# If that body has a function called take_damage, we call it with 1.
 	if body and body.has_method("take_damage"):
 		body.take_damage(1)
+
+	# Add score when this debris is destroyed
+	ScoreManager.add_score(2)
 
 	# After hitting something, delete this rock so it doesn’t keep colliding.
 	queue_free()

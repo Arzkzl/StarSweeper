@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LevelConfig" load_steps=2 format=3 uid="uid://cwes8045kaiqk"]
+
+[ext_resource type="Script" uid="uid://c8ko5r0k6ls6y" path="res://scripts/LevelConfig.gd" id="1_00lfh"]
+
+[resource]
+script = ExtResource("1_00lfh")
+level_name = "Level 1"
+duration_sec = 60
+spawn_rate_per_sec = 1.2
+max_enemies_on_screen = 10
+enemy_speed = 180.0
+enemy_types = Array[String](["basic"])
+score_multiplier = 1.0
+background_video_path = ""
+metadata/_custom_type_script = "uid://c8ko5r0k6ls6y"

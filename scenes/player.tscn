@@ -1,7 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://ciw002d7xvba7"]
+[gd_scene load_steps=20 format=3 uid="uid://ciw002d7xvba7"]
 
 [ext_resource type="Script" uid="uid://cx77rg2c4hxaf" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="Texture2D" uid="uid://1um7dv1x4nmu" path="res://assets/player/Player_ship_3.png" id="2_g2els"]
+[ext_resource type="Texture2D" uid="uid://d0143tgw3yqci" path="res://assets/halo/—Pngtree—black hole vortex glowing blue_6796475.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://b8u3huekudlif" path="res://assets/halo/magnet_circle_03.png" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://cdx66c138xqaf" path="res://assets/background/sphere1.png" id="4_dqkch"]
 
@@ -13,8 +13,6 @@ radius = 95.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhqgy"]
 radius = 12.0
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qhqgy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_tuyoq"]
 blend_mode = 1
@@ -77,12 +75,12 @@ color_ramp = SubResource("GradientTexture1D_fjrip")
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g2els")
+core_path = NodePath("")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(0, -1)
-scale = Vector2(0.4, 0.448)
-texture = ExtResource("2_g2els")
+position = Vector2(-1.75, -0.750007)
+scale = Vector2(0.19625, 0.19625)
+texture = ExtResource("2_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -99,29 +97,22 @@ shape = SubResource("CircleShape2D_3vyb7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collector"]
 shape = SubResource("CircleShape2D_qhqgy")
 
-[node name="BH_Core" type="Sprite2D" parent="."]
-modulate = Color(0.821562, 0.819299, 0.962132, 1)
-material = SubResource("CanvasItemMaterial_qhqgy")
-rotation = -6.08945
-scale = Vector2(0.35, 0.312)
-texture = ExtResource("3_qhqgy")
-
 [node name="BH_Glow" type="Sprite2D" parent="."]
 modulate = Color(0.671334, 0.681291, 0.99565, 1)
 z_index = 2
 material = SubResource("CanvasItemMaterial_tuyoq")
-position = Vector2(1, 1)
+position = Vector2(0.500006, 3)
 rotation = 0.518363
-scale = Vector2(0.5, 0.458)
+scale = Vector2(0.417396, 0.40229)
 texture = ExtResource("3_qhqgy")
 
 [node name="BH_Horizon" type="Sprite2D" parent="."]
 modulate = Color(0.780392, 0.8, 1, 1)
 z_index = 1
 material = SubResource("CanvasItemMaterial_tuyoq")
-position = Vector2(1, 1)
+position = Vector2(0.500002, 0.999999)
 rotation = 0.518363
-scale = Vector2(0.45, 0.412)
+scale = Vector2(0.424552, 0.397485)
 texture = ExtResource("3_qhqgy")
 
 [node name="BHAnim" type="AnimationPlayer" parent="."]

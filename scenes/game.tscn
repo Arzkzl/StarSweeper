@@ -136,6 +136,19 @@ theme_override_font_sizes/font_size = 22
 text = "Highest Score: "
 horizontal_alignment = 2
 
+[node name="LevelLabel" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -126.0
+offset_top = 47.0
+offset_right = -31.0
+offset_bottom = 83.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.0235294, 0.839216, 0.309804, 1)
+theme_override_fonts/font = ExtResource("4_p57ef")
+theme_override_font_sizes/font_size = 28
+
 [node name="DebrisTimer" type="Timer" parent="."]
 wait_time = 1.6
 autostart = true
