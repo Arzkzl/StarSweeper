@@ -1,14 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ba2yvodq32l3h"]
+[gd_scene load_steps=4 format=3 uid="uid://ba2yvodq32l3h"]
 
 [ext_resource type="Script" uid="uid://db8rhcdgfbi2x" path="res://scripts/star.gd" id="1_j6vao"]
 [ext_resource type="Texture2D" uid="uid://b0eqjjlqbhfkr" path="res://assets/star/star_07.png" id="2_ef0hr"]
-[ext_resource type="Texture2D" uid="uid://b8u3huekudlif" path="res://assets/halo/magnet_circle_03.png" id="3_8d8bx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j6vao"]
 radius = 6.0
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8lrp4"]
-blend_mode = 1
 
 [node name="Star" type="Area2D" groups=["star"]]
 script = ExtResource("1_j6vao")
@@ -21,12 +17,3 @@ texture = ExtResource("2_ef0hr")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("CircleShape2D_j6vao")
-
-[node name="Glow" type="Sprite2D" parent="."]
-visible = false
-modulate = Color(1, 0.886275, 0.415686, 1)
-z_index = -1
-material = SubResource("CanvasItemMaterial_8lrp4")
-position = Vector2(0.1, 1.1)
-scale = Vector2(0.15, 0.146)
-texture = ExtResource("3_8d8bx")

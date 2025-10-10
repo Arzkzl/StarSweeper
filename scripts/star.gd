@@ -1,39 +1,39 @@
 # scripts/Star.gd
 extends Area2D
-# This is a collectible “star”.
-# It slowly drifts, gets pulled by the player's magnet, and disappears when collected.
+# A collectible “star”. It drifts a bit, is pulled by the player's magnet,
+# and disappears (adds score) when collected.
 
-@export var drag: float = 4.0                 # How quickly the star slows down (higher = stops faster)
-@export var drift_speed: float = 0.0          # Initial drift speed (0 = no drift at spawn)
-var _velocity: Vector2 = Vector2.ZERO         # The star’s current movement direction and speed
+@export var drag: float = 4.0          # higher = slows faster
+@export var drift_speed: float = 0.0   # initial drift speed (0 = no drift)
+
+var _velocity: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	add_to_group("star")                       # Put this node in the "star" group (easy to find/filter)
-	# Pick a random direction on spawn; if drift_speed is 0, this has no visible effect.
-	var dir := Vector2(randf() * 2.0 - 1.0, randf() * 2.0 - 1.0).normalized()  # Random unit vector
-	_velocity = dir * drift_speed              # Set initial velocity = direction × speed
+	# make sure we are in the "star" group (Player checks this)
+	if not is_in_group("star"):
+		add_to_group("star")
+
+	# random initial direction (has effect only if drift_speed > 0)
+	var dir := Vector2(randf() * 2.0 - 1.0, randf() * 2.0 - 1.0).normalized()
+	_velocity = dir * drift_speed
 
 func _physics_process(delta: float) -> void:
-	# delta = time (in seconds) since the last physics frame. Use it for smooth motion.
-	# Gradually slow the velocity toward zero by "drag" each frame:
+	# simple drag and move
 	_velocity = _velocity.move_toward(Vector2.ZERO, drag * delta)
-	# Move the star according to its current velocity:
 	global_position += _velocity * delta
 
-# Called by the Player’s magnet each frame while the star is inside the magnet Area2D.
+# called by Player magnet
 func attract_to(target: Vector2, strength: float, delta: float) -> void:
-	var to_target := target - global_position   # Vector pointing from star to the target (player)
-	var accel := to_target.normalized() * strength * delta  # Acceleration toward the target this frame
-	_velocity = (_velocity + accel).limit_length(300.0)     # Add accel, but clamp max speed to 300 px/s
+	var to_target := target - global_position
+	var accel := to_target.normalized() * strength * delta
+	_velocity = (_velocity + accel).limit_length(300.0)
 
-# Give the star a small push toward a point when it spawns (nice “inward drift” effect).
+# small kick on spawn
 func nudge_towards(point: Vector2, speed: float = 60.0) -> void:
-	var dir := (point - global_position).normalized()  # Direction toward the point
-	_velocity = dir * speed                            # Set velocity instantly to that direction/speed
+	var dir := (point - global_position).normalized()
+	_velocity = dir * speed
 
-# When collected by the Player’s collector Area2D, remove this star from the scene.
-# When collected by the Player’s collector Area2D, remove this star from the scene.
+# when collected
 func collect() -> void:
-	# add +1 to current score (ScoreManager must be Autoload)
-	ScoreManager.add_score(1)
-	queue_free()  # delete at end of frame                                  # Delete this node safely at the end of the frame
+	ScoreManager.add_score(1)  # single source of truth
+	queue_free()

@@ -22,7 +22,6 @@ ScoreManager="*res://scripts/ScoreManager.gd"
 
 [display]
 
-window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [dotnet]

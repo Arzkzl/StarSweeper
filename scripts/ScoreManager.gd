@@ -1,25 +1,15 @@
-# ScoreManager.gd
-# Project Settings → Autoload → Name: ScoreManager, Path: this file
-
+# ScoreManager.gd 
 extends Node
 
-const SAVE_PATH: String = "user://save.json"
+const SAVE_PATH: String = "user://high_score.json"
 
-var data: Dictionary = {
-	"high_score": 0,
-	"options": {
-		"sfx_on": true,
-		"low_fx": false
-	}
-}
-
-# ------- CURRENT SCORE (for gameplay / leveling) -------
 var score: int = 0
+var high_score: int = 0
 
 func _ready() -> void:
-	load_data()
+	_load_high_score()
 
-# ---------- Score (current) ----------
+# --- current score ---
 func get_score() -> int:
 	return score
 
@@ -30,63 +20,38 @@ func add_score(amount: int) -> void:
 func reset_score() -> void:
 	score = 0
 
-# ---------- High score ----------
+# --- high score ---
 func get_high_score() -> int:
-	return int(data.get("high_score", 0))
+	return high_score
 
-func try_set_high_score(score_value: int) -> bool:
-	if score_value > get_high_score():
-		data["high_score"] = score_value
-		save_data()
+func try_set_high_score(value: int) -> bool:
+	if value > high_score:
+		high_score = value
+		_save_high_score()
 		return true
 	return false
 
-# ---------- Options ----------
-func set_option(key: String, value: bool) -> void:
-	var opts: Dictionary = data.get("options", {})
-	opts[key] = value
-	data["options"] = opts
-	save_data()
+# --- save / load ---
+func _save_high_score() -> void:
+	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify({"high_score": high_score}))
+		f.close()
 
-func get_option(key: String, default_value: bool = false) -> bool:
-	var opts: Dictionary = data.get("options", {})
-	return bool(opts.get(key, default_value))
-
-# ---------- Save / Load ----------
-func save_data() -> void:
-	var f: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if f == null:
-		push_warning("ScoreManager: cannot open save file for writing.")
-		return
-	var json_text: String = JSON.stringify(data, "\t")
-	f.store_string(json_text)
-	f.flush()
-	f.close()
-	print("[ScoreManager] saved to ", SAVE_PATH, " | high=", data.get("high_score", 0))
-
-func load_data() -> void:
+func _load_high_score() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
+		high_score = 0
 		return
-	var f: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
-	if f == null:
-		push_warning("ScoreManager: cannot open save file for reading.")
-		return
-	var text: String = f.get_as_text()
-	f.close()
-	var value: Variant = JSON.parse_string(text)
-	if value is Dictionary:
-		data = value as Dictionary
-	else:
-		push_warning("ScoreManager: invalid JSON; using defaults.")
 
-# ---------- Reset all ----------
-func reset_data() -> void:
-	data = {
-		"high_score": 0,
-		"options": {
-			"sfx_on": true,
-			"low_fx": false
-		}
-	}
-	save_data()
-	reset_score()
+	var f: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	if f:
+		var text: String = f.get_as_text()
+		f.close()
+
+		var parsed: Variant = JSON.parse_string(text)
+		if parsed is Dictionary:
+			var dict: Dictionary = parsed as Dictionary
+			if dict.has("high_score"):
+				high_score = int(dict["high_score"])
+		else:
+			high_score = 0
